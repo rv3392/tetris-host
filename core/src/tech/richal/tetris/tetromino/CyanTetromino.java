@@ -3,23 +3,18 @@ package tech.richal.tetris.tetromino;
 import tech.richal.tetris.grid.Grid;
 
 public class CyanTetromino extends Tetromino {
-    private final int WIDTH = 1;
-    private final int HEIGHT = 4;
-    private final Colour COLOUR = Colour.CYAN;
-
-    private Grid grid;
+    private static final int WIDTH = 1;
+    private static final int HEIGHT = 4;
+    private static final Colour COLOUR = Colour.CYAN;
 
     public CyanTetromino() {
-        super();
-
-        this.grid = this.createGrid();
+        super(createGrid());
     }
 
-    @Override
-    public Grid createGrid() {
-        Grid createdGrid = new Grid(this.WIDTH, this.HEIGHT);
+    private static Grid createGrid() {
+        Grid createdGrid = new Grid(WIDTH, HEIGHT);
         for (int y = 0; y < HEIGHT; y++) {
-            createdGrid.setGridSpace(0, y, this.COLOUR);
+            createdGrid.setGridSpace(0, y, COLOUR);
         }
         return createdGrid;
     }

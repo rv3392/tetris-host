@@ -41,13 +41,7 @@ public class Grid {
         }
     }
 
-    public void draw() {
-
-    }
-
-    public boolean onTopOf(Grid other) {
-        return false;
-    }
+    public void rotateGrid() {}
 
     public int getWidth() {
         return this.width;

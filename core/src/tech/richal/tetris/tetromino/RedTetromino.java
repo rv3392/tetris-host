@@ -4,10 +4,10 @@ import tech.richal.tetris.grid.Grid;
 
 public class RedTetromino extends Tetromino {
     public RedTetromino() {
-        super();
+        super(createGrid());
     }
 
-    public Grid createGrid() {
+    private static Grid createGrid() {
         return new Grid(0,0);
     }
 }

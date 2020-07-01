@@ -26,14 +26,12 @@ public class Board {
         this.displayGrid = new Grid(this.width, this.height);
     }
 
-    private void createNewPiece() {
-        // Pick a random colour and create a Tetromino of that specific colour
-        int randomPieceColour = new Random().nextInt(Colour.values().length);
-        Tetromino newPiece = Colour.colourToTetronimo(Colour.values()[randomPieceColour]);
-        this.pieces.add(newPiece);
-    }
-
     public void update(int x, int y, boolean rotate) {
+        if (this.pieces.size() == 0) {
+            this.createNewPiece();
+            return;
+        }
+
         Tetromino fallingPiece = this.pieces.get(this.fallingPieceIndex);
         fallingPiece.update(x, y, rotate);
 
@@ -44,20 +42,34 @@ public class Board {
 
             if (checkPiece.isOnTopOf(fallingPiece)) {
                 this.createNewPiece();
-                this.fallingPieceIndex++;
                 break;
             }
         }
 
-        if (fallingPiece.getX() == 0) {
+        if (fallingPiece.getY() == 0) {
             this.createNewPiece();
-            this.fallingPieceIndex++;
         }
     }
 
-    public void display() {
+    public Grid display() {
         for (Tetromino piece : this.pieces) {
             displayGrid.setGridSpaces(piece.getX(), piece.getY(), piece.display());
         }
+
+        return displayGrid;
+    }
+
+    private void createNewPiece() {
+        // Pick a random colour and create a Tetromino of that specific colour
+        int randomPieceColour = new Random().nextInt(Colour.values().length);
+
+        // Colour.CYAN is temporary until other colours have implemented grids
+        Tetromino newPiece = TetrominoFactory.createInstance(Colour.CYAN);
+        this.pieces.add(newPiece);
+        this.fallingPieceIndex++;
+    }
+
+    private boolean checkForFullRow(int row) {
+        return false;
     }
 }
