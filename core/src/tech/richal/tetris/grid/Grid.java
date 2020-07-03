@@ -51,7 +51,7 @@ public class Grid {
      * Swaps the height and the width. Transposes the grid (swapping rows and
      * columns) and then reverses the order of the columns.
      */
-    public void rotateClockwise() {
+    public void rotateAnticlockwise() {
         Colour[][] rotatedGrid = new Colour[this.height][this.width];
 
         // Transpose the Grid for this piece
@@ -61,7 +61,7 @@ public class Grid {
             }
         }
 
-        this.grid = rotatedGrid;
+        this.grid = rotatedGrid.clone();
         this.width = rotatedGrid.length;
         this.height = rotatedGrid[0].length;
 
@@ -70,7 +70,7 @@ public class Grid {
             rotatedGrid[this.width - x - 1] = this.grid[x];
         }
 
-        this.grid = rotatedGrid;
+        this.grid = rotatedGrid.clone();
     }
 
     public int getWidth() { 

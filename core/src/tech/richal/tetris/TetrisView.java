@@ -8,8 +8,14 @@ import tech.richal.tetris.tetromino.Colour;
 
 public class TetrisView {
     private static final Texture[] PIECE_TEXTURES = {
-        new Texture("clear.jpg"), 
-        new Texture("cyan.jpg")
+            new Texture("clear.jpg"),
+            new Texture("cyan.jpg"),
+            new Texture("blue.jpg"),
+            new Texture("orange.jpg"),
+            new Texture("yellow.jpg"),
+            new Texture("green.jpg"),
+            new Texture("purple.jpg"),
+            new Texture("red.jpg")
     };
 
     public void draw(SpriteBatch batch, Grid tetrisBoardGrid) {
@@ -32,6 +38,18 @@ public class TetrisView {
                 return PIECE_TEXTURES[0];
             case CYAN:
                 return PIECE_TEXTURES[1];
+            case BLUE:
+                return PIECE_TEXTURES[2];
+            case ORANGE:
+                return PIECE_TEXTURES[3];
+            case YELLOW:
+                return PIECE_TEXTURES[4];
+            case GREEN:
+                return PIECE_TEXTURES[5];
+            case PURPLE:
+                return PIECE_TEXTURES[6];
+            case RED:
+                return PIECE_TEXTURES[7];
             default:
                 return PIECE_TEXTURES[0];
         }

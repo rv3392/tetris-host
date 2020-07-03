@@ -66,7 +66,7 @@ public class Board {
         int randomPieceColour = new Random().nextInt(Colour.values().length);
 
         // Colour.CYAN is temporary until other colours have implemented grids
-        Tetromino newPiece = TetrominoFactory.createInstance(Colour.CYAN);
+        Tetromino newPiece = TetrominoFactory.createInstance(Colour.ORANGE);
         this.pieces.add(newPiece);
 
         if (this.fallingPieceIndex != 0) {

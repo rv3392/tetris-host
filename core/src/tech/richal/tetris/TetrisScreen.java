@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import tech.richal.tetris.board.Board;
 
 public class TetrisScreen extends ScreenAdapter {
+    private final int BOARD_WIDTH = 10;
+    private final int BOARD_HEIGHT = 24;
+
     Board tetrisBoard;
     TetrisView view;
 
@@ -21,7 +24,7 @@ public class TetrisScreen extends ScreenAdapter {
 
     @Override
     public void show () {
-        tetrisBoard = new Board(10, 24);
+        tetrisBoard = new Board(BOARD_WIDTH, BOARD_HEIGHT);
         view = new TetrisView();
     }
 
@@ -32,7 +35,7 @@ public class TetrisScreen extends ScreenAdapter {
 
         this.totalDelta += delta;
         if (this.totalDelta >= 1) {
-            tetrisBoard.update(0, -1, false);
+            tetrisBoard.update(0, -1, true);
             this.totalDelta = 0;
         }
 
