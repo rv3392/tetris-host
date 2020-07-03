@@ -26,8 +26,8 @@ public abstract class Tetromino {
      * @param pieceGrid - the Grid for a particular concrete Tetromino
      */
     protected Tetromino(Grid pieceGrid) {
-        this.x = 0;
-        this.y = 0;
+        this.x = 5;
+        this.y = 19;
         this.pieceDirection = Direction.NORTH;
 
         grid = pieceGrid;
@@ -47,6 +47,7 @@ public abstract class Tetromino {
 
         if (rotation) {
             this.pieceDirection = Direction.rotate(this.pieceDirection);
+            this.grid.rotateClockwise();
         }
     }
 

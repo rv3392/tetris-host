@@ -24,7 +24,7 @@ public class Grid {
         this.grid[x][y] = colour;
     }
 
-    private Colour getGridSpace(int x, int y) {
+    public Colour getGridSpace(int x, int y) {
         return this.grid[x][y];
     }
 
@@ -34,16 +34,46 @@ public class Grid {
                 Colour newColour = grid.getGridSpace(i, j);
                 if (newColour == Colour.NONE) {
                     //If the newColour is empty/transparent then do nothing
-                    continue;
+                    //continue;
                 }
                 this.setGridSpace(x + i, y + j, newColour);
             }
         }
     }
 
-    public void rotateGrid() {}
+    public void clearGrid() {
+        this.setGridSpaces(0, 0, new Grid(this.width, this.height));
+    }
 
-    public int getWidth() {
+    /**
+     * Rotates the grid in a clockwise direction. 
+     * 
+     * Swaps the height and the width. Transposes the grid (swapping rows and
+     * columns) and then reverses the order of the columns.
+     */
+    public void rotateClockwise() {
+        Colour[][] rotatedGrid = new Colour[this.height][this.width];
+
+        // Transpose the Grid for this piece
+        for (int x = 0; x < this.width; x++) {
+            for (int y = 0; y < this.height; y++) {
+                rotatedGrid[y][x] = this.grid[x][y];
+            }
+        }
+
+        this.grid = rotatedGrid;
+        this.width = rotatedGrid.length;
+        this.height = rotatedGrid[0].length;
+
+        // Reverse columns of the grid
+        for (int x = 0; x < this.width; x++) {
+            rotatedGrid[this.width - x - 1] = this.grid[x];
+        }
+
+        this.grid = rotatedGrid;
+    }
+
+    public int getWidth() { 
         return this.width;
     }
 

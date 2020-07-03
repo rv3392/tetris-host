@@ -32,7 +32,7 @@ public class Board {
             return;
         }
 
-        Tetromino fallingPiece = this.pieces.get(this.fallingPieceIndex);
+        Tetromino fallingPiece = this.pieces.get(this.pieces.size() - 1);
         fallingPiece.update(x, y, rotate);
 
         for (Tetromino checkPiece : this.pieces) {
@@ -52,6 +52,8 @@ public class Board {
     }
 
     public Grid display() {
+        displayGrid.clearGrid();
+        
         for (Tetromino piece : this.pieces) {
             displayGrid.setGridSpaces(piece.getX(), piece.getY(), piece.display());
         }
@@ -66,7 +68,10 @@ public class Board {
         // Colour.CYAN is temporary until other colours have implemented grids
         Tetromino newPiece = TetrominoFactory.createInstance(Colour.CYAN);
         this.pieces.add(newPiece);
-        this.fallingPieceIndex++;
+
+        if (this.fallingPieceIndex != 0) {
+            this.fallingPieceIndex++;
+        }
     }
 
     private boolean checkForFullRow(int row) {
