@@ -47,7 +47,7 @@ public abstract class Tetromino {
 
         if (rotation) {
             this.pieceDirection = Direction.rotate(this.pieceDirection);
-            this.grid.rotateClockwise();
+            this.grid.rotateAnticlockwise();
         }
     }
 
