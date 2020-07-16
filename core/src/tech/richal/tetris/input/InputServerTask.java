@@ -41,6 +41,10 @@ public class InputServerTask implements Runnable {
         }
     }
 
+    public void sendMessageToConnection(String message) {
+        this.serverOut.println(message);
+    }
+
     private void handleInput(String inputCommand) {
         try {
             listener.onCommandReceived(InputServerCommand.valueOf(inputCommand.toUpperCase()));
@@ -48,8 +52,10 @@ public class InputServerTask implements Runnable {
             System.err.println("Invalid input received!");
             System.err.println("Input should be one of: start, exit,"
                     + " restart, left, right, down or rotate in any combination of case");
-        }
-    }
 
-    
+            this.serverOut.println("Invalid input received!");
+            this.serverOut.println("Input should be one of: start, exit,"
+                    + " restart, left, right, down or rotate in any combination of case");
+        }
+    }    
 }

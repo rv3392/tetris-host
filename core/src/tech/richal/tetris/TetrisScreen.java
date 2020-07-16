@@ -20,6 +20,8 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
     private Tetris game;
     private float totalDelta;
 
+    private InputServer inputServer;
+
     public TetrisScreen(Tetris game) {
         this.game = game;
         this.totalDelta = 0.0f;
@@ -32,7 +34,8 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
 
         // Create a new thread for the input server using the onCommandReceived
         // implemented in this class.
-        new Thread(new InputServer(this)).start();
+        this.inputServer = new InputServer(this);
+        new Thread(this.inputServer).start();
         // Setup the keyboard as a client for the InputServer
         // A client is used for the keyboard in order to not clutter this class.
         Gdx.input.setInputProcessor(new KeyboardController());
