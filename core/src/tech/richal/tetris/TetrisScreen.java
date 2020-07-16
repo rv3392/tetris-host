@@ -102,6 +102,7 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
 
     private BoardUpdateResult updateBoard(int x, int y, boolean rotate) {
         BoardUpdateResult boardResult = this.tetrisBoard.update(x, y, rotate);
+        this.inputServer.sendMessageToConnections(tetrisBoard.toString() + "\n");
         return boardResult;
     }
 }

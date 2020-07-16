@@ -78,6 +78,12 @@ public class Board {
         return displayGrid;
     }
 
+    @Override
+    public String toString() {
+        return this.display().toString() + "\n\n" 
+                + "Score: " + this.score + "\n" 
+                + "Level: " + this.level;
+    }
 
     /**
      * Performs an update on a copy of the piece currently falling and checks if
@@ -114,7 +120,7 @@ public class Board {
 
         Tetromino fallingPiece = pieces.get(this.fallingPieceIndex);
         this.grid.setGridSpaces(fallingPiece.getX(), fallingPiece.getY(), fallingPiece.display());
-
+        
         this.createNewPiece();
 
         int rowsCleared = this.clearFullRows();
@@ -145,7 +151,7 @@ public class Board {
 
         return false;
     }
-
+    
 
     private int clearFullRows() {
         int fullRowNumber = this.findFullRow();
@@ -193,10 +199,10 @@ public class Board {
     private void updateScore(int rowsCleared) {
         if (rowsCleared <= 0 || rowsCleared > 4) {
             return;
-            }
+        }
 
         this.score += Board.BASE_SCORES[rowsCleared] * (this.level + 1);
-        }
+    }
 
     private void updateLevel(int rowsCleared) {
         this.totalLinesCleared += rowsCleared;
