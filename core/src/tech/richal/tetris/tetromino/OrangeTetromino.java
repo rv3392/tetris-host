@@ -7,8 +7,8 @@ public class OrangeTetromino extends Tetromino {
     private static final int HEIGHT = 2;
     private static final Colour TETROMINO_COLOUR = Colour.ORANGE;
 
-    public OrangeTetromino() {
-        super(createGrid());
+    public OrangeTetromino(int x, int y) {
+        super(createGrid(), x, y);
     }
 
     /**

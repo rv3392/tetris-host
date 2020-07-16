@@ -7,8 +7,8 @@ public class PurpleTetromino extends Tetromino {
     private static final int HEIGHT = 2;
     private static final Colour TETROMINO_COLOUR = Colour.PURPLE;
 
-    public PurpleTetromino() {
-        super(createGrid());
+    public PurpleTetromino(int x, int y) {
+        super(createGrid(), x, y);
     }
 
     private static Grid createGrid() {

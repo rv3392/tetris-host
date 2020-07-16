@@ -7,8 +7,8 @@ public class CyanTetromino extends Tetromino {
     private static final int HEIGHT = 4;
     private static final Colour COLOUR = Colour.CYAN;
 
-    public CyanTetromino() {
-        super(createGrid());
+    public CyanTetromino(int x, int y) {
+        super(createGrid(), x, y);
     }
 
     private static Grid createGrid() {
