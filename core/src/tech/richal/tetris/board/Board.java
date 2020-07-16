@@ -17,9 +17,15 @@ public class Board {
     private int height;
 
     private List<Tetromino> pieces;
+    private Tetromino falling;
     private int fallingPieceIndex;
 
     private Grid grid;
+
+    private int level;
+    private int score;
+    private int totalLinesCleared;
+    private static final int[] BASE_SCORES = {40, 100, 300, 1200};
 
     public Board(int width, int height) {
         this.width = width;
@@ -29,6 +35,10 @@ public class Board {
         this.fallingPieceIndex = -1;
 
         this.grid = new Grid(this.width, this.height);
+
+        this.level = 0;
+        this.score = 0;
+        this.totalLinesCleared = 0;
     }
 
     public BoardUpdateResult update(int x, int y, boolean rotate) {
@@ -68,6 +78,15 @@ public class Board {
         return displayGrid;
     }
 
+
+    /**
+     * Performs an update on a copy of the piece currently falling and checks if
+     * it is valid. An update is valid if It does not cause the piece to:
+     *     <ol>
+     *         <li> overlap another </li>
+     *         <li> be outside the bounds of the boards </li> 
+     *     </ol>
+     */
     private boolean isUpdateValid(int x, int y, boolean rotate) {
         Tetromino fallingPiece = (Tetromino) this.pieces.get(this.fallingPieceIndex).clone();
         fallingPiece.update(x, y, rotate);
@@ -96,12 +115,13 @@ public class Board {
         Tetromino fallingPiece = pieces.get(this.fallingPieceIndex);
         this.grid.setGridSpaces(fallingPiece.getX(), fallingPiece.getY(), fallingPiece.display());
 
-        int fullRowNumber = this.findFullRow();
-        if (fullRowNumber != ROW_NOT_FULL) {
-            this.deleteRow(fullRowNumber);
-        };
-        
         this.createNewPiece();
+
+        int rowsCleared = this.clearFullRows();
+        this.updateScore(rowsCleared);
+        this.updateLevel(rowsCleared);
+        System.out.println(this.score);        
+
         return BoardUpdateResult.SUCCESS;
     }
 
@@ -118,7 +138,7 @@ public class Board {
         Tetromino fallingPiece = this.pieces.get(this.fallingPieceIndex);
         for (int col = fallingPiece.getX(); 
                 col < fallingPiece.getX() + fallingPiece.display().getWidth(); col++) {
-            if (isColumnFull(col)) {
+            if (this.grid.getGridSpace(col, START_Y_POS) != Colour.NONE) {
                 return true;
             }
         }
@@ -126,12 +146,17 @@ public class Board {
         return false;
     }
 
-    private boolean isColumnFull(int col) {
-        if (this.grid.getGridSpace(col, START_Y_POS) == Colour.NONE) {
-            return false;
-        }
 
-        return true;
+    private int clearFullRows() {
+        int fullRowNumber = this.findFullRow();
+        int numFullRows = 0;
+        while (fullRowNumber != ROW_NOT_FULL) {
+            this.clearRow(fullRowNumber);
+            fullRowNumber = this.findFullRow();
+            numFullRows++;
+        };
+
+        return numFullRows;
     }
 
     private int findFullRow() {
@@ -152,11 +177,29 @@ public class Board {
         return ROW_NOT_FULL;
     }
 
-    private void deleteRow(int row) {
-        for (int y = row + 1; y < this.height; y++) {
-            for (int x = 0; x < this.width; x++) {
-                this.grid.setGridSpace(x, y - 1, this.grid.getGridSpace(x, y));
+    private void clearRow(int row) {
+        this.grid.clearGrid();
+        for (Tetromino piece : this.pieces.subList(0, this.fallingPieceIndex)) {
+            if (row - piece.getY() >= 0 && row - piece.getY() < piece.display().getHeight()) {
+                piece.display().deleteRow(row - piece.getY());
+            } else if (row - piece.getY() < 0) {
+                piece.update(0, -1, false);
             }
+
+            this.grid.setGridSpaces(piece.getX(), piece.getY(), piece.display());
         }
+    }
+
+    private void updateScore(int rowsCleared) {
+        if (rowsCleared <= 0 || rowsCleared > 4) {
+            return;
+            }
+
+        this.score += Board.BASE_SCORES[rowsCleared] * (this.level + 1);
+        }
+
+    private void updateLevel(int rowsCleared) {
+        this.totalLinesCleared += rowsCleared;
+        this.level = this.totalLinesCleared / 10;
     }
 }

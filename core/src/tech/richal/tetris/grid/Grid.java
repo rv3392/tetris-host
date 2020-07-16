@@ -62,6 +62,15 @@ public class Grid {
         }
     }
 
+    public void deleteRow(int row) {
+        for (int y = row + 1; y < this.height; y++) {
+            for (int x = 0; x < this.width; x++) {
+                this.setGridSpace(x, y - 1, this.getGridSpace(x, y));
+            }
+        }
+        this.height = this.height - 1;
+    }
+
     /**
      * Rotates the grid in a clockwise direction. 
      * 

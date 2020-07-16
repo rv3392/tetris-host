@@ -49,7 +49,7 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
         this.totalDelta += delta;
         // Move down each second
         if (this.totalDelta >= 1.0f) {
-            tetrisBoard.update(0, -1, false);
+            this.updateBoard(0, -1, false);
             this.totalDelta = 0;
         }
 
@@ -73,19 +73,19 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
                 System.out.println("START");
                 break;
             case LEFT:
-                commandResult = this.tetrisBoard.update(-1, 0, false);
+                commandResult = this.updateBoard(-1, 0, false);
                 break;
             case RIGHT:
-                commandResult = this.tetrisBoard.update(1, 0, false);
+                commandResult = this.updateBoard(1, 0, false);
                 break;
             case DOWN:
-                commandResult = this.tetrisBoard.update(0, -1, false);
+                commandResult = this.updateBoard(0, -1, false);
                 break;
             case ROTATE:
-                commandResult = this.tetrisBoard.update(0, 0, true);
+                commandResult = this.updateBoard(0, 0, true);
                 break;
             default:
-                commandResult = this.tetrisBoard.update(0, 0, false);
+                commandResult = this.updateBoard(0, 0, false);
                 break;
         }
 
@@ -98,5 +98,10 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
             System.out.println("Game Over");
             System.exit(0);
         }
+    }
+
+    private BoardUpdateResult updateBoard(int x, int y, boolean rotate) {
+        BoardUpdateResult boardResult = this.tetrisBoard.update(x, y, rotate);
+        return boardResult;
     }
 }
