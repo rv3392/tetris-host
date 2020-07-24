@@ -1,12 +1,20 @@
 package tech.richal.tetris;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import tech.richal.tetris.board.Board;
 import tech.richal.tetris.grid.Grid;
 import tech.richal.tetris.tetromino.Colour;
 
 public class TetrisView {
+    private BitmapFont textFont;
+
+    public TetrisView() {
+        textFont = new BitmapFont();
+    }
+
     private static final Texture[] PIECE_TEXTURES = {
             new Texture("clear.jpg"),
             new Texture("cyan.jpg"),
@@ -18,8 +26,14 @@ public class TetrisView {
             new Texture("red.jpg")
     };
 
-    public void draw(SpriteBatch batch, Grid tetrisBoardGrid) {
+    public void draw(SpriteBatch batch, Board board) {
         batch.begin();
+        this.drawBoard(batch, board.display());
+        this.drawScore(batch, board.getScore(), board.getLevel());
+        batch.end();
+    }
+
+    private void drawBoard(SpriteBatch batch, Grid tetrisBoardGrid) {
         for (int x = 0; x < tetrisBoardGrid.getWidth(); x++) {
             for (int y = 0; y < tetrisBoardGrid.getHeight(); y++) {
                 batch.draw(
@@ -29,7 +43,13 @@ public class TetrisView {
                 );
             }
         }
-        batch.end();
+    }
+
+    private void drawScore(SpriteBatch batch, int score, int level) {
+        CharSequence scoreString = "Score:\n" + Integer.toString(score);
+        CharSequence levelString = "Level:\n" + Integer.toString(level);
+        textFont.draw(batch, scoreString, 425, 780);
+        textFont.draw(batch, levelString, 425, 720);
     }
 
     private static Texture colourToTexture(Colour colour) {

@@ -53,7 +53,7 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
             this.totalDelta = 0;
         }
 
-        this.view.draw(this.game.batch, tetrisBoard.display());
+        this.view.draw(this.game.batch, tetrisBoard);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
             case DOWN:
                 commandResult = BoardUpdateResult.SUCCESS;
                 while (commandResult != BoardUpdateResult.REACHED_BOTTOM) {
-                commandResult = this.updateBoard(0, -1, false);
+                    commandResult = this.updateBoard(0, -1, false);
                 }
                 break;
             case ROTATE:

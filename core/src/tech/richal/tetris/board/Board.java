@@ -78,6 +78,14 @@ public class Board {
         return displayGrid;
     }
 
+    public int getScore() {
+        return this.score;
+    }
+
+    public int getLevel() {
+        return this.level;
+    }
+
     @Override
     public String toString() {
         return this.display().toString() + "\n\n" 
@@ -125,8 +133,7 @@ public class Board {
 
         int rowsCleared = this.clearFullRows();
         this.updateScore(rowsCleared);
-        this.updateLevel(rowsCleared);
-        System.out.println(this.score);        
+        this.updateLevel(rowsCleared);       
 
         return BoardUpdateResult.REACHED_BOTTOM;
     }
