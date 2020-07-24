@@ -72,7 +72,7 @@ public class Grid {
     }
 
     /**
-     * Rotates the grid in a clockwise direction. 
+     * Rotates the grid in an anti-clockwise direction. 
      * 
      * Swaps the height and the width. Transposes the grid (swapping rows and
      * columns) and then reverses the order of the columns.

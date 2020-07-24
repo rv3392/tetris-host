@@ -79,7 +79,10 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
                 commandResult = this.updateBoard(1, 0, false);
                 break;
             case DOWN:
+                commandResult = BoardUpdateResult.SUCCESS;
+                while (commandResult != BoardUpdateResult.REACHED_BOTTOM) {
                 commandResult = this.updateBoard(0, -1, false);
+                }
                 break;
             case ROTATE:
                 commandResult = this.updateBoard(0, 0, true);

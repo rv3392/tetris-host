@@ -128,7 +128,7 @@ public class Board {
         this.updateLevel(rowsCleared);
         System.out.println(this.score);        
 
-        return BoardUpdateResult.SUCCESS;
+        return BoardUpdateResult.REACHED_BOTTOM;
     }
 
     private void createNewPiece() {
