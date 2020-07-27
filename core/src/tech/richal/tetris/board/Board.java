@@ -20,6 +20,8 @@ public class Board {
     private Tetromino falling;
     private int fallingPieceIndex;
 
+    private Bag pieceBag;
+
     private Grid grid;
 
     private int level;
@@ -33,6 +35,8 @@ public class Board {
 
         this.pieces = new ArrayList<>();
         this.fallingPieceIndex = -1;
+
+        pieceBag = new Bag(START_X_POS, START_Y_POS);
 
         this.grid = new Grid(this.width, this.height);
 
@@ -166,10 +170,7 @@ public class Board {
     }
 
     private void createNewPiece() {
-        // Pick a random colour and create a Tetromino of that specific colour
-        int randomPieceColour = new Random().nextInt(Colour.values().length);
-        Tetromino newPiece = TetrominoFactory.createInstance(
-                Colour.values()[randomPieceColour], START_X_POS, START_Y_POS);
+        Tetromino newPiece = this.pieceBag.pop();
         this.pieces.add(newPiece);
         this.fallingPieceIndex++;
     }
