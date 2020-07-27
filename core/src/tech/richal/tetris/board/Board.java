@@ -49,22 +49,14 @@ public class Board {
 
         Tetromino fallingPiece = this.pieces.get(this.fallingPieceIndex);
 
-        if (fallingPiece.getY() == 0) {
-            return this.handlePieceReachedBottom();
-        }
-
-        for (Tetromino checkPiece : this.pieces.subList(0, this.fallingPieceIndex)) {
-            if (fallingPiece.isOnTopOf(checkPiece)) {
-                return this.handlePieceReachedBottom();                
+        if (!this.isUpdateValid(x, y, rotate)) {
+            if (y < 0) {
+                return this.handlePieceReachedBottom();
             }
         }
 
-        if (this.isUpdateValid(x, y, rotate)) {
-            fallingPiece.update(x, y, rotate);
-            return BoardUpdateResult.SUCCESS;
-        }
-
-        return BoardUpdateResult.NO_VALID_MOVE;
+        fallingPiece.update(x, y, rotate);
+        return BoardUpdateResult.SUCCESS;
     }
 
     public Grid display() {
@@ -112,14 +104,15 @@ public class Board {
             }
         }
 
-        if (this.isPieceOutOfBounds(fallingPiece)) {
+        if (this.isPieceOutOfBoundsHorizontal(fallingPiece)
+                || this.isPieceOutOfBoundsVertical(fallingPiece)) {
             return false;
         }
 
         return true;
     }
 
-    private boolean isPieceOutOfBounds(Tetromino piece) {
+    private boolean isPieceOutOfBoundsHorizontal(Tetromino piece) {
         if (piece.getX() + piece.display().getWidth() <= this.width
                 && piece.getX() >= 0) {
             return false;
@@ -138,6 +131,35 @@ public class Board {
         if (piece.getX() + piece.display().getWidth() > this.width) {
             for (int x = - piece.getX() + this.width; x < piece.display().getWidth(); x++) {
                 for (int y = 0; y < piece.display().getHeight(); y++) {
+                    if (piece.display().getGridSpace(x, y) != Colour.NONE) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isPieceOutOfBoundsVertical(Tetromino piece) {
+        if (piece.getY() + piece.display().getHeight() <= this.height
+                && piece.getY() >= 0) {
+            return false;
+        }
+
+        if (piece.getY() < 0) {
+            for (int x = 0; x < piece.display().getWidth(); x++) {
+                for (int y = 0; y < -piece.getY(); y++) {
+                    if (piece.display().getGridSpace(x, y) != Colour.NONE) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if (piece.getX() + piece.display().getWidth() > this.width) {
+            for (int x = 0; x < piece.display().getWidth(); x++) {
+                for (int y = -piece.getY() + this.height; y < piece.display().getHeight(); y++) {
                     if (piece.display().getGridSpace(x, y) != Colour.NONE) {
                         return true;
                     }
