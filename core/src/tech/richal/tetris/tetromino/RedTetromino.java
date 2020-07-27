@@ -4,7 +4,7 @@ import tech.richal.tetris.grid.Grid;
 
 public class RedTetromino extends Tetromino {
     private static final int WIDTH = 3;
-    private static final int HEIGHT = 2;
+    private static final int HEIGHT = 3;
     private static final Colour TETROMINO_COLOUR = Colour.RED;
 
     public RedTetromino(int x, int y) {

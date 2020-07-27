@@ -3,7 +3,7 @@ package tech.richal.tetris.tetromino;
 import tech.richal.tetris.grid.Grid;
 
 public class CyanTetromino extends Tetromino {
-    private static final int WIDTH = 1;
+    private static final int WIDTH = 4;
     private static final int HEIGHT = 4;
     private static final Colour COLOUR = Colour.CYAN;
 
@@ -13,8 +13,8 @@ public class CyanTetromino extends Tetromino {
 
     private static Grid createGrid() {
         Grid createdGrid = new Grid(WIDTH, HEIGHT);
-        for (int y = 0; y < HEIGHT; y++) {
-            createdGrid.setGridSpace(0, y, COLOUR);
+        for (int x = 0; x < WIDTH; x++) {
+            createdGrid.setGridSpace(x, 2, COLOUR);
         }
         return createdGrid;
     }

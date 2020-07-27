@@ -3,9 +3,14 @@ package tech.richal.tetris.tetromino;
 import tech.richal.tetris.grid.Grid;
 
 public class YellowTetromino extends Tetromino {
-    private static final int WIDTH = 2;
-    private static final int HEIGHT = 2;
+    private static final int WIDTH = 4;
+    private static final int HEIGHT = 4;
     private static final Colour TETROMINO_COLOUR = Colour.YELLOW;
+
+    private static final int LEFT_BOUND = 1;
+    private static final int RIGHT_BOUND = 3;
+    private static final int TOP_BOUND = 0;
+    private static final int LOWER_BOUND = 2;
 
     public YellowTetromino(int x, int y) {
         super(createGrid(), x, y);
@@ -13,8 +18,8 @@ public class YellowTetromino extends Tetromino {
 
     private static Grid createGrid() {
         Grid pieceGrid = new Grid(WIDTH, HEIGHT);
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
+        for (int x = LEFT_BOUND; x < RIGHT_BOUND; x++) {
+            for (int y = TOP_BOUND; y < LOWER_BOUND; y++) {
                 pieceGrid.setGridSpace(x, y, TETROMINO_COLOUR);
             }
         }

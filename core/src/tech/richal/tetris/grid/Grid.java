@@ -34,11 +34,31 @@ public class Grid {
     }
 
     public void setGridSpace(int x, int y, Colour colour) {
+        if(isOutOfBounds(x, y)) {
+            return;
+        }
+
         this.grid[x][y] = colour;
     }
 
     public Colour getGridSpace(int x, int y) {
+        if (isOutOfBounds(x, y)) {
+            return Colour.NONE;
+        }
+
         return this.grid[x][y];
+    }
+
+    private boolean isOutOfBounds(int x, int y) {
+        if (x < 0 || x >= this.width) {
+            return true;
+        }
+
+        if (y < 0 || y >= this.height) {
+            return true;
+        }
+
+        return false;
     }
 
     public void setGridSpaces(int x, int y, Grid grid) {

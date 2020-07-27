@@ -112,13 +112,40 @@ public class Board {
             }
         }
 
-        if (fallingPiece.getX() < 0 || fallingPiece.getY() < 0
-                || fallingPiece.getX() + fallingPiece.display().getWidth() > this.width
-                || fallingPiece.getY() + fallingPiece.display().getHeight() > this.height) {
+        if (this.isPieceOutOfBounds(fallingPiece)) {
             return false;
         }
 
         return true;
+    }
+
+    private boolean isPieceOutOfBounds(Tetromino piece) {
+        if (piece.getX() + piece.display().getWidth() <= this.width
+                && piece.getX() >= 0) {
+            return false;
+        }
+
+        if (piece.getX() < 0) {
+            for (int x = 0; x < -piece.getX(); x++) {
+                for (int y = 0; y < piece.display().getHeight(); y++) {
+                    if (piece.display().getGridSpace(x, y) != Colour.NONE) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if (piece.getX() + piece.display().getWidth() > this.width) {
+            for (int x = - piece.getX() + this.width; x < piece.display().getWidth(); x++) {
+                for (int y = 0; y < piece.display().getHeight(); y++) {
+                    if (piece.display().getGridSpace(x, y) != Colour.NONE) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     private BoardUpdateResult handlePieceReachedBottom() {
