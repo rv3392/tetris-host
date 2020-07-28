@@ -10,9 +10,6 @@ import tech.richal.tetris.grid.Grid;
 import tech.richal.tetris.tetromino.Colour;
 
 public class TetrisView {
-    FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
-    FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-    parameter.size = 12;
     private BitmapFont smallFont, bigFont;
 
     public TetrisView() {
