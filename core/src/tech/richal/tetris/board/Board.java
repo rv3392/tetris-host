@@ -9,7 +9,7 @@ import tech.richal.tetris.grid.Grid;
 import tech.richal.tetris.tetromino.*;
 
 public class Board {
-    private static final int START_Y_POS = 20;
+    private static final int START_Y_POS = 21;
     private static final int START_X_POS = 5;
 
     private static final int ROW_NOT_FULL = -1;
