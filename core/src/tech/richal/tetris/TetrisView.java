@@ -73,15 +73,9 @@ public class TetrisView {
 
     private void drawNextTetromino(SpriteBatch batch, Grid nextTetromino) {
         int leftX = (int)(495 - (nextTetromino.getWidth() / 2.0f) * 30);
-<<<<<<< HEAD
         int bottomY = (int)(490 - (nextTetromino.getHeight() / 2.0f) * 30);
         for (int x = 0; x < nextTetromino.getWidth(); x++) {
             for (int y = 1; y < 3; y++) {
-=======
-        int bottomY = (int)(520 - (nextTetromino.getHeight() / 2.0f) * 30);
-        for (int x = 0; x < nextTetromino.getWidth(); x++) {
-            for (int y = 0; y < 3; y++) {
->>>>>>> 8a2572693ffc862f4180376e33d19e5ea1f1f984
                 batch.draw(
                         colourToTexture(nextTetromino.getGridSpace(x, y)),
                         leftX + x * 30, bottomY + y * 30, //x and y
