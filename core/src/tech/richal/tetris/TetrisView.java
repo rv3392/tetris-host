@@ -1,8 +1,14 @@
 package tech.richal.tetris;
 
+import java.util.List;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 import tech.richal.tetris.board.Board;
 import tech.richal.tetris.board.exception.NullNextTetromino;
@@ -12,25 +18,37 @@ import tech.richal.tetris.tetromino.Colour;
 public class TetrisView {
     private BitmapFont smallFont, bigFont;
 
-    public TetrisView() {
-        smallFont = new BitmapFont();
-        bigFont = new BitmapFont();
-        bigFont.getData().setScale(1.5f);
-    }
-
+    private Texture backgroundImage;
     private static final Texture[] PIECE_TEXTURES = {
-            new Texture("clear.jpg"),
-            new Texture("cyan.jpg"),
-            new Texture("blue.jpg"),
-            new Texture("orange.jpg"),
-            new Texture("yellow.jpg"),
-            new Texture("green.jpg"),
-            new Texture("purple.jpg"),
-            new Texture("red.jpg")
+        new Texture("clear.jpg"),
+        new Texture("cyan.jpg"),
+        new Texture("blue.jpg"),
+        new Texture("orange.jpg"),
+        new Texture("yellow.jpg"),
+        new Texture("green.jpg"),
+        new Texture("purple.jpg"),
+        new Texture("red.jpg")
     };
+
+    public TetrisView() {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
+                Gdx.files.internal("fonts/FiraCode-Regular.ttf"));
+
+        FreeTypeFontParameter smallFontParameter = new FreeTypeFontParameter();
+        smallFontParameter.size = 12;
+        smallFontParameter.color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+        smallFont = generator.generateFont(smallFontParameter);
+
+        FreeTypeFontParameter bigFontParameter = new FreeTypeFontParameter();
+        bigFontParameter.color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+        bigFont = generator.generateFont(bigFontParameter);
+
+        backgroundImage = new Texture(Gdx.files.internal("background.png"));
+    }
 
     public void draw(SpriteBatch batch, Board board) {
         batch.begin();
+        batch.draw(this.backgroundImage, 0, 0);
         this.drawBoard(batch, board.display());
         this.drawScore(batch, board.getScore(), board.getLevel());
         try {
@@ -54,25 +72,31 @@ public class TetrisView {
     }
 
     private void drawNextTetromino(SpriteBatch batch, Grid nextTetromino) {
-        CharSequence nextPieceString = "Next Piece:\n";
-        smallFont.draw(batch, nextPieceString, 425, 660);
-
+        int leftX = (int)(495 - (nextTetromino.getWidth() / 2.0f) * 30);
+        int bottomY = (int)(520 - (nextTetromino.getHeight() / 2.0f) * 30);
         for (int x = 0; x < nextTetromino.getWidth(); x++) {
-            for (int y = 0; y < nextTetromino.getHeight(); y++) {
+            for (int y = 0; y < 3; y++) {
                 batch.draw(
                         colourToTexture(nextTetromino.getGridSpace(x, y)),
-                        425 + x * 20, 560 + y * 20, //x and y
-                        20, 20 //width and height
+                        leftX + x * 30, bottomY + y * 30, //x and y
+                        30, 30 //width and height
                 );
             }
         }
     }
 
     private void drawScore(SpriteBatch batch, int score, int level) {
-        CharSequence scoreString = "Score: " + Integer.toString(score);
-        CharSequence levelString = "Level: " + Integer.toString(level);
-        bigFont.draw(batch, scoreString, 425, 780);
-        bigFont.draw(batch, levelString, 425, 720);
+        CharSequence scoreString = Integer.toString(score);
+        CharSequence levelString = Integer.toString(level);
+        bigFont.draw(batch, scoreString, 490, 686);
+        bigFont.draw(batch, levelString, 490, 636);
+    }
+
+    private void drawAgents(SpriteBatch batch, List<String> agents) {
+        for (String agent : agents) {
+            CharSequence agentString = agent;
+            bigFont.draw(batch, agentString, 425, 310);
+        }
     }
 
     private static Texture colourToTexture(Colour colour) {
