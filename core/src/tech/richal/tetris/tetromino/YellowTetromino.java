@@ -9,8 +9,8 @@ public class YellowTetromino extends Tetromino {
 
     private static final int LEFT_BOUND = 1;
     private static final int RIGHT_BOUND = 3;
-    private static final int TOP_BOUND = 0;
-    private static final int LOWER_BOUND = 2;
+    private static final int TOP_BOUND = 1;
+    private static final int LOWER_BOUND = 3;
 
     public YellowTetromino(int x, int y) {
         super(createGrid(), x, y);

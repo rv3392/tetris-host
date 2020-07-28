@@ -18,9 +18,9 @@ public class OrangeTetromino extends Tetromino {
      */
     private static Grid createGrid() {
         Grid pieceGrid = new Grid(WIDTH, HEIGHT);
-        pieceGrid.setGridSpace(2,1, TETROMINO_COLOUR);
+        pieceGrid.setGridSpace(2,2, TETROMINO_COLOUR);
         for (int x = 0; x < WIDTH; x++) {
-            pieceGrid.setGridSpace(x, 0, TETROMINO_COLOUR);
+            pieceGrid.setGridSpace(x, 1, TETROMINO_COLOUR);
         }
 
         return pieceGrid;

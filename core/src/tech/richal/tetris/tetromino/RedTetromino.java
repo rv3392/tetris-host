@@ -13,10 +13,10 @@ public class RedTetromino extends Tetromino {
 
     private static Grid createGrid() {
         Grid pieceGrid = new Grid(WIDTH, HEIGHT);
-        pieceGrid.setGridSpace(0, 1, TETROMINO_COLOUR);
+        pieceGrid.setGridSpace(0, 2, TETROMINO_COLOUR);
+        pieceGrid.setGridSpace(1, 2, TETROMINO_COLOUR);
         pieceGrid.setGridSpace(1, 1, TETROMINO_COLOUR);
-        pieceGrid.setGridSpace(1, 0, TETROMINO_COLOUR);
-        pieceGrid.setGridSpace(2, 0, TETROMINO_COLOUR);
+        pieceGrid.setGridSpace(2, 1, TETROMINO_COLOUR);
         return pieceGrid;
     }
 }
