@@ -5,14 +5,20 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import tech.richal.tetris.board.Board;
+import tech.richal.tetris.board.exception.NullNextTetromino;
 import tech.richal.tetris.grid.Grid;
 import tech.richal.tetris.tetromino.Colour;
 
 public class TetrisView {
-    private BitmapFont textFont;
+    FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/myfont.ttf"));
+    FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+    parameter.size = 12;
+    private BitmapFont smallFont, bigFont;
 
     public TetrisView() {
-        textFont = new BitmapFont();
+        smallFont = new BitmapFont();
+        bigFont = new BitmapFont();
+        bigFont.getData().setScale(1.5f);
     }
 
     private static final Texture[] PIECE_TEXTURES = {
@@ -30,6 +36,11 @@ public class TetrisView {
         batch.begin();
         this.drawBoard(batch, board.display());
         this.drawScore(batch, board.getScore(), board.getLevel());
+        try {
+            this.drawNextTetromino(batch, board.getNextTetromino());
+        } catch (NullNextTetromino e) {
+            
+        }
         batch.end();
     }
 
@@ -45,11 +56,26 @@ public class TetrisView {
         }
     }
 
+    private void drawNextTetromino(SpriteBatch batch, Grid nextTetromino) {
+        CharSequence nextPieceString = "Next Piece:\n";
+        smallFont.draw(batch, nextPieceString, 425, 660);
+
+        for (int x = 0; x < nextTetromino.getWidth(); x++) {
+            for (int y = 0; y < nextTetromino.getHeight(); y++) {
+                batch.draw(
+                        colourToTexture(nextTetromino.getGridSpace(x, y)),
+                        425 + x * 20, 560 + y * 20, //x and y
+                        20, 20 //width and height
+                );
+            }
+        }
+    }
+
     private void drawScore(SpriteBatch batch, int score, int level) {
-        CharSequence scoreString = "Score:\n" + Integer.toString(score);
-        CharSequence levelString = "Level:\n" + Integer.toString(level);
-        textFont.draw(batch, scoreString, 425, 780);
-        textFont.draw(batch, levelString, 425, 720);
+        CharSequence scoreString = "Score: " + Integer.toString(score);
+        CharSequence levelString = "Level: " + Integer.toString(level);
+        bigFont.draw(batch, scoreString, 425, 780);
+        bigFont.draw(batch, levelString, 425, 720);
     }
 
     private static Texture colourToTexture(Colour colour) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import tech.richal.tetris.board.exception.NullNextTetromino;
 import tech.richal.tetris.grid.Grid;
 import tech.richal.tetris.tetromino.*;
 
@@ -17,7 +18,7 @@ public class Board {
     private int height;
 
     private List<Tetromino> pieces;
-    private Tetromino falling;
+    private Tetromino fallingPiece, nextPiece;
     private int fallingPieceIndex;
 
     private Bag pieceBag;
@@ -63,6 +64,10 @@ public class Board {
         return BoardUpdateResult.SUCCESS;
     }
 
+    /**
+     * Returns the Grid representation of the current game board including 
+     * @return
+     */
     public Grid display() {
         Grid displayGrid = new Grid(this.grid);
         if (this.fallingPieceIndex != -1) {
@@ -72,6 +77,17 @@ public class Board {
         }
 
         return displayGrid;
+    }
+
+    /**
+     * Returns the Grid representation of the next Tetromino to be dropped.
+     * @throws NullNextTetromino if the next piece has not been chosen yet
+     */
+    public Grid getNextTetromino() throws NullNextTetromino {
+        if (this.nextPiece == null) {
+            throw new NullNextTetromino();
+        }
+        return this.nextPiece.display();
     }
 
     public int getScore() {
@@ -195,6 +211,8 @@ public class Board {
         Tetromino newPiece = this.pieceBag.pop();
         this.pieces.add(newPiece);
         this.fallingPieceIndex++;
+
+        this.nextPiece = this.pieceBag.peek(1);
     }
 
     private boolean checkForFullColumn() {

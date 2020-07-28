@@ -12,6 +12,7 @@ import tech.richal.tetris.tetromino.TetrominoFactory;
 public class Bag {
     /* The number of Tetrominos to be contained within the Bag */
     private static final int BAG_SIZE = 7;
+    private static final int MIN_FOR_REFILL = 1;
     private ArrayList<Tetromino> bag;
 
     private int pieceStartX, pieceStartY;
@@ -44,13 +45,31 @@ public class Bag {
      * @return the next Tetromino
      */
     public Tetromino pop() {
-        if (bag.size() <= 0) {
+        if (bag.size() <= this.MIN_FOR_REFILL) {
             fill();
         }
 
         Tetromino nextPiece = this.bag.get(this.bag.size() - 1);
         this.bag.remove(this.bag.get(this.bag.size() - 1));
         return nextPiece;
+    }
+
+    /**
+     * Peeks into the Bag and retrieves a Tetromino without removing.
+     * 
+     * Looks n pieces forward into the bag. e.g. if n = 1, the next
+     * Tetromino that will be popped from the bag is returned. n must
+     * be between 1 and the size of the bag (inclusive).
+     * @param n - how much to peek forward
+     * @return the piece that is n pieces forward
+     */
+    public Tetromino peek(int n) {
+        if (n <= 0 || n > this.bag.size()) {
+            
+        }
+
+        Tetromino peekPiece = this.bag.get(this.bag.size() - n);
+        return peekPiece;
     }
 
     /**
