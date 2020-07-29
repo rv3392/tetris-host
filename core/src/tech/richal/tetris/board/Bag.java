@@ -11,8 +11,8 @@ import tech.richal.tetris.tetromino.TetrominoFactory;
 
 public class Bag {
     /* The number of Tetrominos to be contained within the Bag */
-    private static final int BAG_SIZE = 7;
-    private static final int MIN_FOR_REFILL = 1;
+    private final int BAG_SIZE = 7;
+    private final int MIN_FOR_REFILL = 1;
     private ArrayList<Tetromino> bag;
 
     private int pieceStartX, pieceStartY;
@@ -31,8 +31,8 @@ public class Bag {
         this.pieceStartX = pieceStartX;
         this.pieceStartY = pieceStartY;
 
-        bag = new ArrayList<>();
-        fill();
+        this.bag = new ArrayList<>();
+        this.fill();
     }
 
     /**
@@ -46,7 +46,7 @@ public class Bag {
      */
     public Tetromino pop() {
         if (bag.size() <= this.MIN_FOR_REFILL) {
-            fill();
+            this.fill();
         }
 
         Tetromino nextPiece = this.bag.get(this.bag.size() - 1);
@@ -87,7 +87,7 @@ public class Bag {
             int randomPieceColour = new Random().nextInt(possibleColours.size());
             Tetromino newPiece = TetrominoFactory.createInstance(
                     possibleColours.get(randomPieceColour), this.pieceStartX, this.pieceStartY);
-            this.bag.add(newPiece);
+            this.bag.add(0, newPiece); // Add to start of list in case the bag already has pieces
             possibleColours.remove(randomPieceColour);
         }
     }
