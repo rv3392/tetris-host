@@ -59,9 +59,7 @@ public class Board {
                 return this.handlePieceReachedBottom();
             }
 
-            if (x != 0) {
-                return BoardUpdateResult.INVALID_MOVE;
-            }
+            return BoardUpdateResult.INVALID_MOVE;
         }
 
         fallingPiece.update(x, y, rotate);
