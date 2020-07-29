@@ -280,7 +280,7 @@ public class Board {
             return;
         }
 
-        this.score += Board.BASE_SCORES[rowsCleared] * (this.level + 1);
+        this.score += Board.BASE_SCORES[rowsCleared - 1] * (this.level + 1);
     }
 
     private void updateLevel(int rowsCleared) {
