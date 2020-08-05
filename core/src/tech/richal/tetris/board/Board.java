@@ -46,6 +46,19 @@ public class Board {
         this.totalLinesCleared = 0;
     }
 
+    public void reset() {
+        this.pieces = new ArrayList<>();
+        this.fallingPieceIndex = -1;
+
+        pieceBag = new Bag(START_X_POS, START_Y_POS);
+
+        this.grid = new Grid(this.width, this.height);
+
+        this.level = 0;
+        this.score = 0;
+        this.totalLinesCleared = 0;
+    }
+
     public BoardUpdateResult update(int x, int y, boolean rotate) {
         if (this.pieces.size() == 0) {
             this.createNewPiece();

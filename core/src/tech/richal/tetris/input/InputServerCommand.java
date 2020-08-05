@@ -1,5 +1,5 @@
 package tech.richal.tetris.input;
 
 public enum InputServerCommand {
-    START, EXIT, RESTART, LEFT, RIGHT, DOWN, ROTATE;
+    NEW, START, EXIT, RESET, LEFT, RIGHT, DOWN, ROTATE;
 }

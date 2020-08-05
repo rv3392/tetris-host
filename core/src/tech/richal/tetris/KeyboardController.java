@@ -37,11 +37,18 @@ public class KeyboardController implements InputProcessor {
             case Keys.DOWN:
                 this.clientOut.println(InputServerCommand.DOWN.toString());
                 return true;
-            case Keys.ALT_RIGHT:
+            case Keys.UP:
                 this.clientOut.println(InputServerCommand.ROTATE.toString());
                 return true;
             case Keys.ESCAPE:
                 this.clientOut.println(InputServerCommand.EXIT.toString());
+                return true;
+            case Keys.N:
+                this.clientOut.println(InputServerCommand.NEW.toString());
+                return true;
+            case Keys.S:
+                this.clientOut.println(InputServerCommand.START.toString());
+                return true;
             default:
                 return false;
         }

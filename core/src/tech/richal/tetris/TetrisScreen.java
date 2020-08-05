@@ -22,6 +22,8 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
 
     private InputServer inputServer;
 
+    private boolean gameRunningFlag = false;
+
     public TetrisScreen(Tetris game) {
         this.game = game;
         this.totalDelta = 0.0f;
@@ -46,11 +48,13 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
         Gdx.gl.glClearColor(0.8f, 0.8f, 0.8f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        this.totalDelta += delta;
-        // Move down each second
-        if (this.totalDelta >= 1.0f) {
-            this.updateBoard(0, -1, false);
-            this.totalDelta = 0;
+        if (gameRunningFlag) {
+            this.totalDelta += delta;
+            // Move down each second
+            if (this.totalDelta >= 1.0f) {
+                this.updateBoard(0, -1, false);
+                this.totalDelta = 0;
+            }
         }
 
         this.view.draw(this.game.batch, tetrisBoard);
@@ -63,14 +67,20 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
     public void onCommandReceived(InputServerCommand command) {
         BoardUpdateResult commandResult = BoardUpdateResult.SUCCESS;
         switch (command) {
+            case NEW:
+                System.out.println("new");
+                break;
             case START:
-                System.out.println("START");
+                System.out.println("start");
+                this.gameRunningFlag = true;
                 break;
             case EXIT:
                 this.onCommandResult(BoardUpdateResult.GAME_OVER);
+                System.exit(0);
                 break;
-            case RESTART:
-                System.out.println("START");
+            case RESET:
+                System.out.println("reset");
+                this.reset();
                 break;
             case LEFT:
                 commandResult = this.updateBoard(-1, 0, false);
@@ -92,14 +102,18 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
                 break;
         }
 
-        commandResult = BoardUpdateResult.SUCCESS;
         this.onCommandResult(commandResult);
+    }
+
+    private void reset() {
+        this.tetrisBoard.reset();
     }
 
     private void onCommandResult(BoardUpdateResult commandResult) {
         if (commandResult == BoardUpdateResult.GAME_OVER) {
             System.out.println("Game Over");
-            System.exit(0);
+            this.gameRunningFlag = false;
+            this.reset();
         }
     }
 

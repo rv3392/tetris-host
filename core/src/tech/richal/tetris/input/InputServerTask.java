@@ -50,12 +50,12 @@ public class InputServerTask implements Runnable {
             listener.onCommandReceived(InputServerCommand.valueOf(inputCommand.toUpperCase()));
         } catch (IllegalArgumentException e) {
             System.err.println("Invalid input received!");
-            System.err.println("Input should be one of: start, exit,"
-                    + " restart, left, right, down or rotate in any combination of case");
+            System.err.println("Input should be one of: new, start, exit,"
+                    + " reset, left, right, down or rotate in any combination of case");
 
             this.serverOut.println("Invalid input received!");
-            this.serverOut.println("Input should be one of: start, exit,"
-                    + " restart, left, right, down or rotate in any combination of case");
+            this.serverOut.println("Input should be one of: new, start, exit,"
+                    + " reset, left, right, down or rotate in any combination of case");
         }
     }    
 }
