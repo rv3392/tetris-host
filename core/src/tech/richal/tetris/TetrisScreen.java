@@ -78,8 +78,9 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
                 this.onCommandResult(BoardUpdateResult.GAME_OVER);
                 System.exit(0);
                 break;
-            case RESET:
-                System.out.println("reset");
+            case END:
+                System.out.println("end game");
+                this.gameRunningFlag = false;
                 this.reset();
                 break;
             case LEFT:

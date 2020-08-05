@@ -49,6 +49,8 @@ public class KeyboardController implements InputProcessor {
             case Keys.S:
                 this.clientOut.println(InputServerCommand.START.toString());
                 return true;
+            case Keys.E:
+                this.clientOut.println(InputServerCommand.END.toString());
             default:
                 return false;
         }

@@ -6,16 +6,25 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class InputServerTask implements Runnable {
-    private InputServerListener listener;
+public class InputServerTask implements Runnable, InputServerListener{
+    private InputServerListener inputListener;
+    private InputServerTaskListener completionListener;
     private Socket client;
 
-    PrintWriter serverOut;
-    BufferedReader serverIn;
+    private PrintWriter serverOut;
+    private BufferedReader serverIn;
 
-    public InputServerTask(Socket client, InputServerListener listener) {
+    private boolean isInputBlocked;
+    private boolean isExitFlagged;
+
+    public InputServerTask(Socket client, InputServerListener inputListener, 
+            InputServerTaskListener completionListener) {
         this.client = client;
-        this.listener = listener;       
+        this.inputListener = inputListener;
+        this.completionListener = completionListener;
+        
+        this.isInputBlocked = true;
+        this.isExitFlagged = false;
     }
 
     @Override
@@ -26,18 +35,32 @@ public class InputServerTask implements Runnable {
         } catch (IOException e) {
             System.err.println("Unable to establish IO with client!");
             e.printStackTrace();
-            return;
+            this.isExitFlagged = true;
         }
 
         // Continuously read from socket and handle the input until the socket is closed.
-        while (true) {
+        while (!this.isExitFlagged) {
             try {
-                this.handleInput(this.serverIn.readLine());
+                String inputLine = this.serverIn.readLine();
+                if (isInputBlocked) {
+                    this.serverOut.println("Input is currently blocked from this device. You are "
+                        + "likely waiting in the queue.");
+                    continue;
+                }
+
+                this.handleInput(inputLine);
             } catch (IOException | NullPointerException e) {
                 System.err.println("Problem reading from IO client.");
                 e.printStackTrace();
-                return;
+                this.isExitFlagged = true;
             }   
+        }
+
+        this.completionListener.onTaskCompleted(this);
+        try {
+            this.client.close();
+        } catch (IOException e) {
+            System.err.println("There was a problem closing the connection with the client.");
         }
     }
 
@@ -45,17 +68,39 @@ public class InputServerTask implements Runnable {
         this.serverOut.println(message);
     }
 
+    public void blockInput() {
+        this.isInputBlocked = true;
+    }
+
+    public void unblockInput() {
+        this.isInputBlocked = false;
+    }
+
     private void handleInput(String inputCommand) {
         try {
-            listener.onCommandReceived(InputServerCommand.valueOf(inputCommand.toUpperCase()));
+            inputListener.onCommandReceived(InputServerCommand.valueOf(inputCommand.toUpperCase()));
+            this.onCommandReceived(InputServerCommand.valueOf(inputCommand.toUpperCase()));
         } catch (IllegalArgumentException e) {
             System.err.println("Invalid input received!");
             System.err.println("Input should be one of: new, start, exit,"
-                    + " reset, left, right, down or rotate in any combination of case");
+                    + " end, left, right, down or rotate in any combination of case");
 
             this.serverOut.println("Invalid input received!");
             this.serverOut.println("Input should be one of: new, start, exit,"
-                    + " reset, left, right, down or rotate in any combination of case");
+                    + " end, left, right, down or rotate in any combination of case");
         }
-    }    
+    }
+
+    @Override
+    public void onCommandReceived(InputServerCommand command) {
+        switch(command) {
+            case END:
+                this.isExitFlagged = true;
+                break;
+            case NEW:
+                break;
+            default:
+                break;
+        }
+    }
 }
