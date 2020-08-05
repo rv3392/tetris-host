@@ -57,6 +57,8 @@ public class Board {
         this.level = 0;
         this.score = 0;
         this.totalLinesCleared = 0;
+
+        this.nextPiece = null;
     }
 
     public BoardUpdateResult update(int x, int y, boolean rotate) {
