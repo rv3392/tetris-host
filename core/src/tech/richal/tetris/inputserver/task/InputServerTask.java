@@ -1,4 +1,4 @@
-package tech.richal.tetris.input;
+package tech.richal.tetris.inputserver.task;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class InputServerTask implements Runnable, InputServerListener{
+import tech.richal.tetris.inputserver.InputServerListener;
+import tech.richal.tetris.inputserver.command.Command;
+
+public class InputServerTask implements Runnable, InputServerListener {
     private InputServerListener inputListener;
     private InputServerTaskListener completionListener;
     private Socket client;
@@ -78,8 +81,9 @@ public class InputServerTask implements Runnable, InputServerListener{
 
     private void handleInput(String inputCommand) {
         try {
-            inputListener.onCommandReceived(InputServerCommand.valueOf(inputCommand.toUpperCase()));
-            this.onCommandReceived(InputServerCommand.valueOf(inputCommand.toUpperCase()));
+            Command parsedInputCommand = new Command(inputCommand);
+            inputListener.onCommandReceived(parsedInputCommand);
+            this.onCommandReceived(parsedInputCommand);
         } catch (IllegalArgumentException e) {
             System.err.println("Invalid input received!");
             System.err.println("Input should be one of: new, start, exit,"
@@ -92,8 +96,8 @@ public class InputServerTask implements Runnable, InputServerListener{
     }
 
     @Override
-    public void onCommandReceived(InputServerCommand command) {
-        switch(command) {
+    public void onCommandReceived(Command command) {
+        switch(command.getType()) {
             case END:
                 this.isExitFlagged = true;
                 break;

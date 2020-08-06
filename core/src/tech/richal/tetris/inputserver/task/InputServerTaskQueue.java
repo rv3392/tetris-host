@@ -1,8 +1,10 @@
-package tech.richal.tetris.input;
+package tech.richal.tetris.inputserver.task;
 
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import tech.richal.tetris.inputserver.InputServerListener;
 
 public class InputServerTaskQueue implements InputServerTaskListener, Iterable<InputServerTask> {
     private ArrayList<InputServerTask> queue;
@@ -18,7 +20,7 @@ public class InputServerTaskQueue implements InputServerTaskListener, Iterable<I
         new Thread(this.queue.get(this.queue.size() - 1)).start();
         this.update();
     }
-
+    
     @Override
     public void onTaskCompleted(InputServerTask completedTask) {
         this.queue.remove(completedTask);

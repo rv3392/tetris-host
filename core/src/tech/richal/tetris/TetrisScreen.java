@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.GL20;
 
 import tech.richal.tetris.board.Board;
 import tech.richal.tetris.board.BoardUpdateResult;
-import tech.richal.tetris.input.InputServer;
-import tech.richal.tetris.input.InputServerCommand;
-import tech.richal.tetris.input.InputServerListener;
+import tech.richal.tetris.inputserver.InputServer;
+import tech.richal.tetris.inputserver.InputServerListener;
+import tech.richal.tetris.inputserver.command.Command;
 
 public class TetrisScreen extends ScreenAdapter implements InputServerListener {
     private final int BOARD_WIDTH = 10;
@@ -64,9 +64,9 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
     public void dispose () {}
 
     @Override
-    public void onCommandReceived(InputServerCommand command) {
+    public void onCommandReceived(Command receivedCommand) {
         BoardUpdateResult commandResult = BoardUpdateResult.SUCCESS;
-        switch (command) {
+        switch (receivedCommand.getType()) {
             case NEW:
                 System.out.println("new");
                 break;

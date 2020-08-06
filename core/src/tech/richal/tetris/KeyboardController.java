@@ -7,7 +7,7 @@ import java.net.Socket;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 
-import tech.richal.tetris.input.InputServerCommand;
+import tech.richal.tetris.inputserver.command.CommandType;
 
 public class KeyboardController implements InputProcessor {
     private static final int PORT_NUMBER = 35354;
@@ -29,28 +29,28 @@ public class KeyboardController implements InputProcessor {
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Keys.LEFT:
-                this.clientOut.println(InputServerCommand.LEFT.toString());
+                this.clientOut.println(CommandType.LEFT.toString());
                 return true;
             case Keys.RIGHT:
-                this.clientOut.println(InputServerCommand.RIGHT.toString());
+                this.clientOut.println(CommandType.RIGHT.toString());
                 return true;
             case Keys.DOWN:
-                this.clientOut.println(InputServerCommand.DOWN.toString());
+                this.clientOut.println(CommandType.DOWN.toString());
                 return true;
             case Keys.UP:
-                this.clientOut.println(InputServerCommand.ROTATE.toString());
+                this.clientOut.println(CommandType.ROTATE.toString());
                 return true;
             case Keys.ESCAPE:
-                this.clientOut.println(InputServerCommand.EXIT.toString());
+                this.clientOut.println(CommandType.EXIT.toString());
                 return true;
             case Keys.N:
-                this.clientOut.println(InputServerCommand.NEW.toString());
+                this.clientOut.println(CommandType.NEW.toString() + " Keyboard");
                 return true;
             case Keys.S:
-                this.clientOut.println(InputServerCommand.START.toString());
+                this.clientOut.println(CommandType.START.toString());
                 return true;
             case Keys.E:
-                this.clientOut.println(InputServerCommand.END.toString());
+                this.clientOut.println(CommandType.END.toString());
             default:
                 return false;
         }
