@@ -92,7 +92,7 @@ public class TetrisView {
         bigFont.draw(batch, levelString, 490, 636);
     }
 
-    private void drawAgents(SpriteBatch batch, List<String> agents) {
+    private void drawQueuedAgents(SpriteBatch batch, List<String> agents) {
         for (String agent : agents) {
             CharSequence agentString = agent;
             bigFont.draw(batch, agentString, 425, 310);

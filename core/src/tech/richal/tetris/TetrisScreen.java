@@ -67,8 +67,8 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
     public void onCommandReceived(Command receivedCommand) {
         BoardUpdateResult commandResult = BoardUpdateResult.SUCCESS;
         switch (receivedCommand.getType()) {
-            case NEW:
-                System.out.println("new");
+            case QUEUE:
+                System.out.println("queue");
                 break;
             case START:
                 System.out.println("start");

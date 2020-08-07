@@ -8,16 +8,19 @@ import java.net.Socket;
 
 import tech.richal.tetris.inputserver.InputServerListener;
 import tech.richal.tetris.inputserver.command.Command;
+import tech.richal.tetris.inputserver.command.CommandType;
 
 public class InputServerTask implements Runnable, InputServerListener {
     private InputServerListener inputListener;
     private InputServerTaskListener completionListener;
     private Socket client;
+    private String clientName;
 
     private PrintWriter serverOut;
     private BufferedReader serverIn;
 
     private boolean isInputBlocked;
+    private boolean isQueued;
     private boolean isExitFlagged;
 
     public InputServerTask(Socket client, InputServerListener inputListener, 
@@ -27,6 +30,7 @@ public class InputServerTask implements Runnable, InputServerListener {
         this.completionListener = completionListener;
         
         this.isInputBlocked = true;
+        this.isQueued = false;
         this.isExitFlagged = false;
     }
 
@@ -44,14 +48,7 @@ public class InputServerTask implements Runnable, InputServerListener {
         // Continuously read from socket and handle the input until the socket is closed.
         while (!this.isExitFlagged) {
             try {
-                String inputLine = this.serverIn.readLine();
-                if (isInputBlocked) {
-                    this.serverOut.println("Input is currently blocked from this device. You are "
-                        + "likely waiting in the queue.");
-                    continue;
-                }
-
-                this.handleInput(inputLine);
+                this.handleInput(this.serverIn.readLine());
             } catch (IOException | NullPointerException e) {
                 System.err.println("Problem reading from IO client.");
                 e.printStackTrace();
@@ -79,9 +76,25 @@ public class InputServerTask implements Runnable, InputServerListener {
         this.isInputBlocked = false;
     }
 
+    public Boolean isQueued() {
+        return this.isQueued();
+    }
+
     private void handleInput(String inputCommand) {
         try {
             Command parsedInputCommand = new Command(inputCommand);
+
+            if (!this.isQueued && parsedInputCommand.getType() != CommandType.QUEUE) {
+                this.serverOut.println("This agent must send \"queue <device_name>\" before " 
+                        + "sending any other command"); 
+                return;
+            }
+
+            if (this.isInputBlocked && this.isQueued) {
+                this.serverOut.println("This device is currently queued."); 
+                return;
+            }
+
             inputListener.onCommandReceived(parsedInputCommand);
             this.onCommandReceived(parsedInputCommand);
         } catch (IllegalArgumentException e) {
@@ -101,10 +114,23 @@ public class InputServerTask implements Runnable, InputServerListener {
             case END:
                 this.isExitFlagged = true;
                 break;
-            case NEW:
-                break;
+            case QUEUE:
+                if (!command.getMessage().equals("")) {
+                    this.clientName = command.getMessage();
+                    this.isQueued = true;
+                    
+                    this.completionListener.onTaskQueued(this);
+                } else {
+                    this.serverOut.println("\"queue\" must be called with a session/device name "
+                            + "such as \"queue <device_name>\"");
+                }
             default:
                 break;
         }
+    }
+
+    @Override
+    public String toString() {
+        return this.clientName;
     }
 }

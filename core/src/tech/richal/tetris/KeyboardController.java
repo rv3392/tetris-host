@@ -43,8 +43,8 @@ public class KeyboardController implements InputProcessor {
             case Keys.ESCAPE:
                 this.clientOut.println(CommandType.EXIT.toString());
                 return true;
-            case Keys.N:
-                this.clientOut.println(CommandType.NEW.toString() + " Keyboard");
+            case Keys.Q:
+                this.clientOut.println(CommandType.QUEUE.toString() + " Keyboard");
                 return true;
             case Keys.S:
                 this.clientOut.println(CommandType.START.toString());
