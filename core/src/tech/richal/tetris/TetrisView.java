@@ -46,7 +46,7 @@ public class TetrisView {
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
     }
 
-    public void draw(SpriteBatch batch, Board board) {
+    public void draw(SpriteBatch batch, Board board, List<String> agents) {
         batch.begin();
         batch.draw(this.backgroundImage, 0, 0);
         this.drawBoard(batch, board.display());
@@ -56,6 +56,7 @@ public class TetrisView {
         } catch (NullNextTetromino e) {
             
         }
+        this.drawQueuedAgents(batch, agents);
         batch.end();
     }
 
@@ -93,9 +94,10 @@ public class TetrisView {
     }
 
     private void drawQueuedAgents(SpriteBatch batch, List<String> agents) {
-        for (String agent : agents) {
-            CharSequence agentString = agent;
-            bigFont.draw(batch, agentString, 425, 310);
+        for (int i = 0; i < agents.size(); i++) {
+            CharSequence agentString = Integer.toString(i + 1) + ". " + agents.get(i);
+
+            bigFont.draw(batch, agentString, 425, 200 - 25 * i);
         }
     }
 

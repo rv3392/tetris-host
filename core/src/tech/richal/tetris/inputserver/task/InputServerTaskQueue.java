@@ -9,6 +9,7 @@ import tech.richal.tetris.inputserver.InputServerListener;
 public class InputServerTaskQueue implements InputServerTaskListener, Iterable<InputServerTask> {
     private ArrayList<InputServerTask> queued;
     private ArrayList<InputServerTask> unqueued;
+
     private InputServerListener inputListener;
 
     public InputServerTaskQueue(InputServerListener inputListener) {
@@ -21,6 +22,13 @@ public class InputServerTaskQueue implements InputServerTaskListener, Iterable<I
         this.unqueued.add(new InputServerTask(client, this.inputListener, this));
         new Thread(this.unqueued.get(this.unqueued.size() - 1)).start();
         this.update();
+    }
+
+    public ArrayList<String> getQueuedClientNames() {
+        final ArrayList<String> names = new ArrayList<String>();
+        this.queued.forEach((task) -> names.add(task.toString()));
+
+        return names;
     }
     
     @Override

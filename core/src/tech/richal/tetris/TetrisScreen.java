@@ -57,7 +57,7 @@ public class TetrisScreen extends ScreenAdapter implements InputServerListener {
             }
         }
 
-        this.view.draw(this.game.batch, tetrisBoard);
+        this.view.draw(this.game.batch, this.tetrisBoard, this.inputServer.getQueuedClientNames());
     }
 
     @Override

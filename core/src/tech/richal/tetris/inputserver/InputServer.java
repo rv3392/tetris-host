@@ -37,4 +37,8 @@ public class InputServer implements Runnable {
     public void sendMessageToConnections(String message) {
         this.tasks.forEach((task) -> task.sendMessageToConnection(message));
     }
+
+    public ArrayList<String> getQueuedClientNames() {
+        return this.tasks.getQueuedClientNames();
+    }
 }
